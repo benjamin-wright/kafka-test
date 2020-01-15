@@ -1,3 +1,8 @@
 #!/bin/bash
 
-(cd images/sbt && docker build -t sbt .)
+docker build -t benwright/sbt images/sbt &
+docker build -t benwright/spark images/spark &
+
+wait
+
+echo "done"

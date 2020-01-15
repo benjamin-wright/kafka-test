@@ -9,6 +9,8 @@ commands:
   command: ./scripts/start-cluster.sh
 - name: clean
   command: ./scripts/stop-cluster.sh
+- name: base-images
+  command: ./scripts/build-images.sh
 deployments:
 - name: kafka
   helm:

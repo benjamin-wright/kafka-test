@@ -1,10 +1,18 @@
-FROM openjdk:8-slim
+FROM benwright/sbt as builder
 
-COPY sbt-1.3.4.tgz ./sbt.tgz
-RUN tar -xvf sbt.tgz \
-    && rm sbt.tgz \
-    && ./sbt/bin/sbt help
-ENV PATH=$PATH:/sbt/bin
+WORKDIR /var/app
+COPY ./ ./
+RUN sbt package
+
+FROM benwright/spark
+
+COPY --from=builder /var/app/target/scala-2.11/simple-project_2.11-1.0.jar code.jar
+
+CMD [ \
+    "spark-submit", \
+    "--class", "SimpleApp", \
+    "code.jar" \
+]
 
 # FROM openjdk:8-slim
 
