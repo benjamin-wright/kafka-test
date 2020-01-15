@@ -1,0 +1,9 @@
+
+
+# Ignore DevSpace cache and log folder
+.devspace/
+
+node_modules
+
+munger/project/target
+munger/target

@@ -1,0 +1,33 @@
+version: v1beta6
+images:
+  producer:
+    image: benwright/kafka-producer
+    dockerfile: producer/Dockerfile
+    context: ./producer
+commands:
+- name: init
+  command: ./scripts/start-cluster.sh
+- name: clean
+  command: ./scripts/stop-cluster.sh
+deployments:
+- name: kafka
+  helm:
+    chart:
+      name: ./kafka
+- name: producer
+  helm:
+    componentChart: true
+    values:
+      containers:
+      - image: benwright/kafka-producer
+        env:
+        - name: KAFKA_HOST
+          value: kafka
+        - name: KAFKA_PORT
+          value: "9092"
+dev:
+  sync:
+  - imageName: producer
+    localSubPath: producer
+    excludePaths:
+    - node_modules/
