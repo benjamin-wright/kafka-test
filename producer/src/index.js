@@ -13,7 +13,7 @@ const interval = setInterval(
   () => {
     producer.send(
       [{
-        topic: 'topicName',
+        topic: 'colours.raw',
         messages: ['message body'],
         timestamp: Date.now()
       }],

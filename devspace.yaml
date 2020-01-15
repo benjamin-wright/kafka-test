@@ -4,6 +4,7 @@ images:
     image: benwright/kafka-producer
     dockerfile: producer/Dockerfile
     context: ./producer
+
 commands:
 - name: init
   command: ./scripts/start-cluster.sh
@@ -11,22 +12,16 @@ commands:
   command: ./scripts/stop-cluster.sh
 - name: base-images
   command: ./scripts/build-images.sh
+
 deployments:
-- name: kafka
+- name: colors-app
   helm:
     chart:
-      name: ./kafka
-- name: producer
-  helm:
-    componentChart: true
+      name: ./chart
     values:
-      containers:
-      - image: benwright/kafka-producer
-        env:
-        - name: KAFKA_HOST
-          value: kafka
-        - name: KAFKA_PORT
-          value: "9092"
+      producer:
+        image: benwright/kafka-producer
+
 dev:
   sync:
   - imageName: producer

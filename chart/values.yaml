@@ -1,0 +1,4 @@
+namespace: colours-app
+
+producer:
+  image: benwright/kafka-producer
