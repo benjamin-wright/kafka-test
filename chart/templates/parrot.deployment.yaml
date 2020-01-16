@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parrot-deployment
+  labels:
+    app: parrot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: parrot
+  template:
+    metadata:
+      labels:
+        app: parrot
+    spec:
+      containers:
+      - name: parrot
+        image: {{ .Values.parrot.image }}
+        env:
+        - name: KAFKA_HOST
+          value: kafka
+        - name: KAFKA_PORT
+          value: "9092"
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi

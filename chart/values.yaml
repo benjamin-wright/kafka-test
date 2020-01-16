@@ -1,4 +1,8 @@
-namespace: colours-app
+parrot:
+  image: benwright/kafka-parrot
 
 producer:
   image: benwright/kafka-producer
+
+color_loader:
+  image: benwright/kafka-color-loader

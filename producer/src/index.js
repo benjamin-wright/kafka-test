@@ -9,12 +9,15 @@ console.info(`Connecting to Kafka at ${host}:${port}`);
 const client = new kafka.KafkaClient({kafkaHost: `${host}:${port}`});
 const producer = new kafka.HighLevelProducer(client);
 
+let index = 0;
+
 const interval = setInterval(
   () => {
+    index += 1;
     producer.send(
       [{
-        topic: 'colours.raw',
-        messages: ['message body'],
+        topic: 'colors.raw',
+        messages: [ `message ${index}`],
         timestamp: Date.now()
       }],
       (err, data) => {

@@ -5,6 +5,6 @@
 
 node_modules
 
-munger/project/project
-munger/project/target
-munger/target
+color-loader/project/project
+color-loader/project/target
+color-loader/target

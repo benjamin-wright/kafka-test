@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: color-loader-deployment
+  labels:
+    app: color-loader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: color-loader
+  template:
+    metadata:
+      labels:
+        app: color-loader
+    spec:
+      containers:
+      - name: color-loader
+        image: {{ .Values.color_loader.image }}

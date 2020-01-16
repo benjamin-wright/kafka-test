@@ -1,9 +1,17 @@
 version: v1beta6
 images:
+  parrot:
+    image: benwright/kafka-parrot
+    dockerfile: parrot/Dockerfile
+    context: ./parrot
   producer:
     image: benwright/kafka-producer
     dockerfile: producer/Dockerfile
     context: ./producer
+  color-loader:
+    image: benwright/kafka-color-loader
+    dockerfile: color-loader/Dockerfile
+    context: ./color-loader
 
 commands:
 - name: init
@@ -19,12 +27,20 @@ deployments:
     chart:
       name: ./chart
     values:
+      color_loader:
+        image: benwright/kafka-color-loader
       producer:
         image: benwright/kafka-producer
+      parrot:
+        image: benwright/kafka-parrot
 
 dev:
   sync:
   - imageName: producer
     localSubPath: producer
+    excludePaths:
+    - node_modules/
+  - imageName: parrot
+    localSubPath: parrot
     excludePaths:
     - node_modules/
