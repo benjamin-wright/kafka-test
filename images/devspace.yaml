@@ -1,0 +1,12 @@
+version: v1beta6
+images:
+  sbt:
+    image: benwright/sbt
+    tag: latest
+    dockerfile: sbt/Dockerfile
+    context: sbt
+  spark:
+    image: benwright/spark
+    tag: latest
+    dockerfile: spark/Dockerfile
+    context: spark

@@ -13,14 +13,6 @@ images:
     dockerfile: color-loader/Dockerfile
     context: ./color-loader
 
-commands:
-- name: init
-  command: ./scripts/start-cluster.sh
-- name: clean
-  command: ./scripts/stop-cluster.sh
-- name: base-images
-  command: ./scripts/build-images.sh
-
 deployments:
 - name: colors-app
   helm:
@@ -44,3 +36,13 @@ dev:
     localSubPath: parrot
     excludePaths:
     - node_modules/
+
+commands:
+- name: init
+  command: ./scripts/start-cluster.sh
+- name: clean
+  command: ./scripts/stop-cluster.sh
+
+dependencies:
+- source:
+    path: ./images
