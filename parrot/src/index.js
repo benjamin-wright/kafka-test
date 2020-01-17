@@ -11,7 +11,8 @@ const payload = {
 
 const consumerGroup = new kafka.ConsumerGroup({
     kafkaHost: `${host}:${port}`,
-    groupId: 'parrot'
+    groupId: 'parrot',
+    fromOffset: 'earliest'
 }, [ 'colors.raw', 'colors.processed' ]);
 
 consumerGroup.on('message', message => {
