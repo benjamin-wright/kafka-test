@@ -11,18 +11,29 @@ const producer = new kafka.HighLevelProducer(client);
 
 let index = 0;
 
+function createMessageBody(i) {
+  return JSON.stringify({
+    color: 'some colour',
+    i
+  });
+}
+
 const interval = setInterval(
   () => {
     index += 1;
     producer.send(
       [{
         topic: 'colors.raw',
-        messages: [ `message ${index}`],
+        messages: [ createMessageBody(index) ],
         timestamp: Date.now()
       }],
       (err, data) => {
-        if (err) { console.error(err); }
-        if (data) { console.log(data); }
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`published: ${data['colors.raw'][0]}`);
       }
     );
   },

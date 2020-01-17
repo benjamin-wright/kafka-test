@@ -23,14 +23,13 @@ object ColorLoader {
     val query = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "CAST(timestamp as TIMESTAMP)")
       .withWatermark("timestamp", "6 seconds")
       .groupBy(
-        window(col("timestamp"), "6 seconds", "3 seconds"),
         col("key").alias("key")
       )
       .agg(
         count("value").cast("STRING").alias("value")
       )
       .writeStream
-      .outputMode("update")
+      .outputMode("append")
       .format("kafka")
       .option("kafka.bootstrap.servers", "kafka:9092")
       .option("topic", "colors.processed")

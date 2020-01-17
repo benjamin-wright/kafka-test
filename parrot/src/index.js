@@ -11,12 +11,11 @@ const payload = {
 
 const consumerGroup = new kafka.ConsumerGroup({
     kafkaHost: `${host}:${port}`,
-    groupId: 'parrot',
-    fromOffset: 'earliest'
+    groupId: 'parrot'
 }, [ 'colors.raw', 'colors.processed' ]);
 
 consumerGroup.on('message', message => {
-    console.log(message);
+    console.log(`${message.topic}: ${message.value}`);
 });
 
 function cleanup() {
