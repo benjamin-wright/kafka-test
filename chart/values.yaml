@@ -5,4 +5,4 @@ producer:
   image: benwright/kafka-producer
 
 color_loader:
-  image: benwright/kafka-color-loader
+  image: benwright/kafka-color-loade

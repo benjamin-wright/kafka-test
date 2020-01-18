@@ -18,24 +18,20 @@ object ColorLoader {
       .format("kafka")
       .option("kafka.bootstrap.servers", "kafka:9092")
       .option("subscribePattern", "colors.raw")
+      .option("startingOffsets", "earliest")
       .option("checkpointLocation", "/tmp/whatevs/readCheckpoint")
       .load()
 
-    val schema = new StructType()
-      .add("color", StringType)
-      .add("index", IntegerType)
-
-    val query = df.select(
+    val query1 = df.select(
+        lit("0").alias("lit"),
         col("key").cast("STRING"),
-        from_json(col("value").cast("STRING"), schema).alias("data"),
         col("timestamp").cast("TIMESTAMP")
       )
-      .withWatermark("timestamp", "5 seconds")
-      .groupBy(
-        col("data.color").alias("key")
+      .withWatermark("timestamp", "5 seconds").groupBy(
+        col("key").alias("key")
       )
       .agg(
-        count("data.index").cast("STRING").alias("value")
+        count("timestamp").cast("STRING").alias("value")
       )
       .writeStream
       .outputMode("update")
@@ -45,7 +41,31 @@ object ColorLoader {
       .option("checkpointLocation", "/tmp/whatevs/aggregationCheckpoint")
       .start()
 
-    query.awaitTermination()
+    val query2 = df.select(
+        lit("0").alias("lit"),
+        col("key").cast("STRING"),
+        col("timestamp").cast("TIMESTAMP")
+      )
+      .withWatermark("timestamp", "5 seconds").groupBy(
+        col("lit")
+      )
+      .agg(
+        collect_set("key").alias("keys")
+      )
+      .select(
+        lit("color_list").alias("key"),
+        to_json(col("keys")).alias("value")
+      )
+      .writeStream
+      .outputMode("update")
+      .format("kafka")
+      .option("kafka.bootstrap.servers", "kafka:9092")
+      .option("topic", "colors.list")
+      .option("checkpointLocation", "/tmp/whatevs/listCheckpoint")
+      .start()
+
+    query1.awaitTermination()
+    query2.awaitTermination()
 
     spark.stop()
   }

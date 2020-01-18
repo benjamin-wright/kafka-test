@@ -3,7 +3,7 @@ const faker = require('faker');
 
 const host = process.env['KAFKA_HOST'] || 'kafka';
 const port = process.env['KAFKA_PORT'] || 9092
-const messageInterval = process.env['SUBMIT_INTERVAL'] || 10000;
+const messageInterval = process.env['SUBMIT_INTERVAL'] || 5000;
 
 console.info(`Connecting to Kafka at ${host}:${port}`);
 
@@ -12,20 +12,14 @@ const producer = new kafka.HighLevelProducer(client);
 
 let index = 0;
 
-function createMessageBody(i) {
-  return JSON.stringify({
-    color: faker.commerce.color(),
-    index: i
-  });
-}
-
 const interval = setInterval(
   () => {
     index += 1;
     producer.send(
       [{
         topic: 'colors.raw',
-        messages: [ createMessageBody(index) ],
+        key: faker.commerce.color(),
+        messages: [ `message ${index}` ],
         timestamp: Date.now()
       }],
       (err, data) => {

@@ -8,3 +8,5 @@ node_modules
 color-loader/project/project
 color-loader/project/target
 color-loader/target
+
+*.tgz
