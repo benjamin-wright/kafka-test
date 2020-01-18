@@ -1,6 +1,7 @@
 /* SimpleApp.scala */
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types._
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 
@@ -20,20 +21,28 @@ object ColorLoader {
       .option("checkpointLocation", "/tmp/whatevs/readCheckpoint")
       .load()
 
-    val query = df.selectExpr("CAST(key as STRING)", "CAST(value as STRING)", "CAST(timestamp as TIMESTAMP)")
-      .withWatermark("timestamp", "6 seconds")
+    val schema = new StructType()
+      .add("color", StringType)
+      .add("index", IntegerType)
+
+    val query = df.select(
+        col("key").cast("STRING"),
+        from_json(col("value").cast("STRING"), schema).alias("data"),
+        col("timestamp").cast("TIMESTAMP")
+      )
+      .withWatermark("timestamp", "5 seconds")
       .groupBy(
-        col("key").alias("key")
+        col("data.color").alias("key")
       )
       .agg(
-        count("value").cast("STRING").alias("value")
+        count("data.index").cast("STRING").alias("value")
       )
       .writeStream
-      .outputMode("append")
+      .outputMode("update")
       .format("kafka")
       .option("kafka.bootstrap.servers", "kafka:9092")
       .option("topic", "colors.processed")
-      .option("checkpointLocation", "/tmp/whatevs/writeCheckpoint")
+      .option("checkpointLocation", "/tmp/whatevs/aggregationCheckpoint")
       .start()
 
     query.awaitTermination()

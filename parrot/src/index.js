@@ -15,7 +15,7 @@ const consumerGroup = new kafka.ConsumerGroup({
 }, [ 'colors.raw', 'colors.processed' ]);
 
 consumerGroup.on('message', message => {
-    console.log(`${message.topic}: ${message.value}`);
+    console.log(`${message.topic}: ${message.key} = ${message.value}`);
 });
 
 function cleanup() {
