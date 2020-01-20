@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: color-viewer-deployment
+  labels:
+    app: color-viewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: color-viewer
+  template:
+    metadata:
+      labels:
+        app: color-viewer
+    spec:
+      containers:
+      - name: color-viewer
+        image: {{ .Values.color_viewer.image }}

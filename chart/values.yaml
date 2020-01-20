@@ -5,4 +5,8 @@ producer:
   image: benwright/kafka-producer
 
 color_loader:
-  image: benwright/kafka-color-loade
+  image: benwright/kafka-color-loader
+
+color_viewer:
+  image: benwright/kafka-color-viewer
+  hostname: color-viewer.ponglehub.co.uk

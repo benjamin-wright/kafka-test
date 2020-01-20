@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: color-viewer
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: {{ .Values.color_viewer.hostname }}
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: color-viewer
+            servicePort: 80

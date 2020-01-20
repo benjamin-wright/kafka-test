@@ -12,6 +12,10 @@ images:
     image: benwright/kafka-color-loader
     dockerfile: color-loader/Dockerfile
     context: ./color-loader
+  color-viewer:
+    image: benwright/kafka-color-viewer
+    dockerfile: color-viewer/Dockerfile
+    context: ./color-viewer
 
 deployments:
 - name: colors-app
@@ -25,6 +29,9 @@ deployments:
         image: benwright/kafka-producer
       parrot:
         image: benwright/kafka-parrot
+      color_viewer:
+        image: benwright/kafka-color-viewer
+        hostname: color-viewer.ponglehub.co.uk
 
 dev:
   sync:
@@ -36,6 +43,11 @@ dev:
     localSubPath: parrot
     excludePaths:
     - node_modules/
+  - imageName: color-viewer
+    localSubPath: color-viewer
+    excludePaths:
+    - node_modules/
+    - build/
 
 commands:
 - name: init
