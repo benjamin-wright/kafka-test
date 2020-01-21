@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function({ color }) {
+export default function({ color, value }) {
   return (
     <div>
-      <p>{color}</p>
+      <p>{color}: {value}</p>
     </div>
   )
 }
