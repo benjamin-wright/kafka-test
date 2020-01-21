@@ -54,6 +54,8 @@ commands:
   command: ./scripts/start-cluster.sh
 - name: clean
   command: ./scripts/stop-cluster.sh
+- name: hosts
+  command: ./scripts/update-hosts.sh color-viewer
 
 dependencies:
 - source:
