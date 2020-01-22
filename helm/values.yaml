@@ -1,0 +1,32 @@
+kafka:
+  image: wurstmeister/kafka
+  host: kafka
+  port: 9092
+
+zookeeper:
+  image: wurstmeister/zookeeper
+  host: zookeeper
+  port: 2181
+
+parrot:
+  kafka:
+    host: kafka
+    port: 9092
+
+producer:
+  image: benwright/kafka-producer
+  kafka:
+    host: kafka
+    port: 9092
+
+color-loader:
+  image: benwright/kafka-color-loader
+
+color-viewer:
+  image: benwright/kafka-color-viewer
+  hostname: color-viewer.ponglehub.co.uk
+
+metrics-api:
+  kafka:
+    host: kafka
+    port: 9092

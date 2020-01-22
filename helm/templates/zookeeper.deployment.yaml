@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: zookeeper
-        image: wurstmeister/zookeeper
+        image: {{ .Values.zookeeper.image }}
         ports:
         - containerPort: 2181

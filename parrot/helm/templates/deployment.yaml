@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: parrot
-        image: {{ .Values.parrot.image }}
+        image: {{ .Values.image }}
         env:
         - name: KAFKA_HOST
-          value: kafka
+          value: {{ .Values.kafka.host }}
         - name: KAFKA_PORT
-          value: "9092"
+          value: "{{ .Values.kafka.port }}"
         resources:
           limits:
             cpu: 100m

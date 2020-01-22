@@ -1,25 +1,50 @@
 const kafka = require('kafka-node');
 
-const host = process.env['KAFKA_HOST'] || 'kafka';
-const port = process.env['KAFKA_PORT'] || 9092
+module.exports = class Kafka {
+  host = null;
+  port = null;
+  topics = [];
+  listeners = {}
+  consumer = null;
+  started = false;
 
-const listTopic = process.env['COLOR_LIST_TOPIC'] || 'colors.list'
-const dataTopic = process.env['COLOR_DATA_TOPIC'] || 'colors.processed'
+  constructor(host, port) {
+    this.host = host;
+    this.port = port;
+  }
 
-console.info(`Connecting to Kafka at ${host}:${port}`);
+  addTopic(topic, listener) {
+    if (this.started) { throw new Error('Can\'t add topics to a running listener'); }
+    if (this.topics.includes(topic)) { throw new Error(`Topic ${topic} is already subscribed`); }
 
-const consumerGroup = new kafka.ConsumerGroup({
-    kafkaHost: `${host}:${port}`,
-    groupId: 'parrot'
-}, [ 'colors.raw', 'colors.processed', 'colors.list' ]);
+    this.topics.push(topic);
+    this.listeners[topic] = listener;
 
-consumerGroup.on('message', message => {
-    console.log(`${message.topic}: ${message.key} = ${message.value}`);
-});
+    return this;
+  }
 
-function cleanup() {
-  consumerGroup.close(() => {});
+  start() {
+    if (this.started) { throw new Error('Already started'); }
+    console.info(`Connecting to Kafka at ${this.host}:${this.port}`);
+
+    this.started = true;
+    this.consumerGroup = new kafka.ConsumerGroup({
+      kafkaHost: `${this.host}:${this.port}`,
+      groupId: 'metrics-api'
+    }, this.topics);
+
+    this.consumerGroup.on('message', (message) => {
+      const listener = this.listeners[message.topic];
+      if (!listener) { throw new Error(`No listener for ${message.topic}`); }
+
+      listener(message.key, message.value);
+    })
+  }
+
+  stop(callback) {
+    if (!this.started) { throw new Error('Already stopped'); }
+
+    this.started = false;
+    this.consumerGroup.close(callback);
+  }
 }
-
-process.on('SIGINT', cleanup);
-process.on('SIGTERM', cleanup);

@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: color-viewer
-        image: {{ .Values.color_viewer.image }}
+        image: {{ .Values.image }}

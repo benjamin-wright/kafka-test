@@ -16,22 +16,28 @@ images:
     image: benwright/kafka-color-viewer
     dockerfile: color-viewer/Dockerfile
     context: ./color-viewer
+  metrics-api:
+    image: benwright/kafka-metrics-api
+    dockerfile: metrics-api/Dockerfile
+    context: ./metrics-api
 
 deployments:
 - name: colors-app
   helm:
     chart:
-      name: ./chart
+      name: ./helm
     values:
-      color_loader:
+      color-loader:
         image: benwright/kafka-color-loader
       producer:
         image: benwright/kafka-producer
       parrot:
         image: benwright/kafka-parrot
-      color_viewer:
+      color-viewer:
         image: benwright/kafka-color-viewer
         hostname: color-viewer.ponglehub.co.uk
+      metrics-api:
+        image: benwright/kafka-metrics-api
 
 dev:
   sync:
@@ -41,6 +47,10 @@ dev:
     - node_modules/
   - imageName: parrot
     localSubPath: parrot
+    excludePaths:
+    - node_modules/
+  - imageName: metrics-api
+    localSubPath: metrics-api
     excludePaths:
     - node_modules/
   - imageName: color-viewer
