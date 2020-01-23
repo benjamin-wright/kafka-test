@@ -5,6 +5,8 @@ import org.apache.spark.sql.types._
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 
+// TODO: finish refactoring to do the first stage aggregation then the second
+
 object ColorLoader {
   def main(args: Array[String]) {
     Logger.getLogger("org").setLevel(Level.OFF)
