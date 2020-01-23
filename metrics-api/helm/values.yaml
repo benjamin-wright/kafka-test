@@ -1,5 +1,9 @@
 image: benwright/kafka-metrics-api
 
 kafka:
-  host: 127.0.0.1
+  host: kafka
   port: 9092
+
+redis:
+  host: redis
+  port: 6379

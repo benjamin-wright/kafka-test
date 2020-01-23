@@ -22,6 +22,10 @@ spec:
           value: {{ .Values.kafka.host }}
         - name: KAFKA_PORT
           value: "{{ .Values.kafka.port }}"
+        - name: REDIS_HOST
+          value: {{ .Values.redis.host }}
+        - name: REDIS_PORT
+          value: "{{ .Values.redis.port }}"
         resources:
           limits:
             cpu: 100m

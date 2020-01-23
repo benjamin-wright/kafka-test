@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: redis-commander
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: {{ .Values.redis_commander.hostname }}
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: redis-commander
+            servicePort: 80

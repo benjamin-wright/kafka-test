@@ -39,6 +39,16 @@ deployments:
       metrics-api:
         image: benwright/kafka-metrics-api
 
+hooks:
+  - command: helm
+    args:
+      - dependency
+      - update
+      - ./helm
+    when:
+      before:
+        deployments: all
+
 dev:
   sync:
   - imageName: producer
@@ -65,7 +75,7 @@ commands:
 - name: clean
   command: ./scripts/stop-cluster.sh
 - name: hosts
-  command: ./scripts/update-hosts.sh color-viewer
+  command: ./scripts/update-hosts.sh color-viewer redis
 
 dependencies:
 - source:
