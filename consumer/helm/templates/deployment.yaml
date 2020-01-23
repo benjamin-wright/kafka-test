@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+  labels:
+    app: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: consumer
+        image: {{ .Values.image }}
+        env:
+        - name: KAFKA_HOST
+          value: {{ .Values.kafka.host }}
+        - name: KAFKA_PORT
+          value: "{{ .Values.kafka.port }}"
+        - name: REDIS_HOST
+          value: {{ .Values.redis.host }}
+        - name: REDIS_PORT
+          value: "{{ .Values.redis.port }}"
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi

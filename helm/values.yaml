@@ -28,6 +28,15 @@ producer:
     host: kafka
     port: 9092
 
+consumer:
+  image: benwright/kafka-consumer
+  kafka:
+    host: kafka
+    port: 9092
+  redis:
+    host: redis
+    port: 6379
+
 color-loader:
   image: benwright/kafka-color-loader
 
@@ -36,9 +45,6 @@ color-viewer:
   hostname: color-viewer.ponglehub.co.uk
 
 metrics-api:
-  kafka:
-    host: kafka
-    port: 9092
   redis:
     host: redis
     port: 6379

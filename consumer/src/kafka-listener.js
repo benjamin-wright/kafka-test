@@ -30,7 +30,8 @@ module.exports = class Kafka {
     this.started = true;
     this.consumerGroup = new kafka.ConsumerGroup({
       kafkaHost: `${this.host}:${this.port}`,
-      groupId: 'metrics-api'
+      groupId: 'consumer',
+      fromOffset: "earliest"
     }, this.topics);
 
     this.consumerGroup.on('message', (message) => {

@@ -8,6 +8,10 @@ images:
     image: benwright/kafka-producer
     dockerfile: producer/Dockerfile
     context: ./producer
+  consumer:
+    image: benwright/kafka-consumer
+    dockerfile: consumer/Dockerfile
+    context: ./consumer
   color-loader:
     image: benwright/kafka-color-loader
     dockerfile: color-loader/Dockerfile
@@ -31,6 +35,8 @@ deployments:
         image: benwright/kafka-color-loader
       producer:
         image: benwright/kafka-producer
+      consumer:
+        image: benwright/kafka-consumer
       parrot:
         image: benwright/kafka-parrot
       color-viewer:
@@ -53,6 +59,10 @@ dev:
   sync:
   - imageName: producer
     localSubPath: producer
+    excludePaths:
+    - node_modules/
+  - imageName: consumer
+    localSubPath: consumer
     excludePaths:
     - node_modules/
   - imageName: parrot

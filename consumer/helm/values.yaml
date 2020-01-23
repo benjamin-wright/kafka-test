@@ -1,0 +1,9 @@
+image: benwright/kafka-consumer
+
+kafka:
+  host: kafka
+  port: 9092
+
+redis:
+  host: redis
+  port: 6379
