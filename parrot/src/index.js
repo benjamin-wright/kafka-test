@@ -12,7 +12,7 @@ const payload = {
 const consumerGroup = new kafka.ConsumerGroup({
     kafkaHost: `${host}:${port}`,
     groupId: 'parrot'
-}, [ 'colors.raw', 'colors.processed', 'colors.list' ]);
+}, [ 'colors.raw', 'colors.processed' ]);
 
 consumerGroup.on('message', message => {
     console.log(`${message.topic}: ${message.key} = ${message.value}`);

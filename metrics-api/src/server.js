@@ -18,10 +18,6 @@ listener.addTopic('colors.processed', (key, value) => {
   console.log(key, value);
   writer.set(key, value);
 });
-listener.addTopic('colors.list', (key, value) => {
-  console.log(key, value);
-  writer.set(key, value);
-});
 
 listener.start();
 

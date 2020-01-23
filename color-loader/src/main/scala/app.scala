@@ -13,7 +13,7 @@ object ColorLoader {
     val spark = SparkSession.builder.appName("Color Loader").getOrCreate()
     import spark.implicits._
 
-    val df = spark
+    val stage1 = spark
       .readStream
       .format("kafka")
       .option("kafka.bootstrap.servers", "kafka:9092")
@@ -22,16 +22,31 @@ object ColorLoader {
       .option("checkpointLocation", "/tmp/whatevs/readCheckpoint")
       .load()
 
-    val query1 = df.select(
+    val query1 = stage1.select(
         lit("0").alias("lit"),
         col("key").cast("STRING"),
         col("timestamp").cast("TIMESTAMP")
       )
-      .withWatermark("timestamp", "5 seconds").groupBy(
-        col("key").alias("key")
+      .withWatermark("timestamp", "5 seconds")
+      .groupBy(
+        col("key").alias("color")
       )
       .agg(
-        count("timestamp").cast("STRING").alias("value")
+        lit("data").alias("key"),
+        count("timestamp").cast("STRING").alias("count_messages")
+      )
+      .groupBy(
+        col("key")
+      )
+      .agg(
+        collect_list("color").alias("colors"),
+        collect_list("count_messages").alias("counts")
+      ).select(
+        col("key"),
+        map_from_arrays(
+            col("colors"),
+            col("counts")
+        ).alias("value")
       )
       .writeStream
       .outputMode("update")
@@ -41,31 +56,49 @@ object ColorLoader {
       .option("checkpointLocation", "/tmp/whatevs/aggregationCheckpoint")
       .start()
 
-    val query2 = df.select(
+    val stage2 = spark
+      .readStream
+      .format("kafka")
+      .option("kafka.bootstrap.servers", "kafka:9092")
+      .option("subscribePattern", "colors.raw")
+      .option("startingOffsets", "earliest")
+      .option("checkpointLocation", "/tmp/whatevs/readCheckpoint")
+      .load()
+
+    val query2 = stage2.select(
         lit("0").alias("lit"),
         col("key").cast("STRING"),
         col("timestamp").cast("TIMESTAMP")
       )
-      .withWatermark("timestamp", "5 seconds").groupBy(
-        col("lit")
+      .withWatermark("timestamp", "5 seconds")
+      .groupBy(
+        col("key").alias("color")
       )
       .agg(
-        collect_set("key").alias("keys")
+        lit("data").alias("key"),
+        count("timestamp").cast("STRING").alias("count_messages")
       )
-      .select(
-        lit("color_list").alias("key"),
-        to_json(col("keys")).alias("value")
+      .groupBy(
+        col("key")
+      )
+      .agg(
+        collect_list("color").alias("colors"),
+        collect_list("count_messages").alias("counts")
+      ).select(
+        col("key"),
+        map_from_arrays(
+            col("colors"),
+            col("counts")
+        ).alias("value")
       )
       .writeStream
       .outputMode("update")
       .format("kafka")
       .option("kafka.bootstrap.servers", "kafka:9092")
-      .option("topic", "colors.list")
-      .option("checkpointLocation", "/tmp/whatevs/listCheckpoint")
+      .option("topic", "colors.processed")
+      .option("checkpointLocation", "/tmp/whatevs/aggregationCheckpoint")
       .start()
-
-    query1.awaitTermination()
-    query2.awaitTermination()
+      .awaitTermination()
 
     spark.stop()
   }
