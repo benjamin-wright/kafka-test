@@ -3,6 +3,7 @@ import './App.css';
 import useInterval from './hooks/set-interval';
 
 import ColorBar from './color-elements/color-bar';
+import metricsApi from './services/metrics';
 
 function App() {
   const [ colorState, setColorState ] = useState({
@@ -12,10 +13,13 @@ function App() {
   });
 
   useInterval(() => {
-    setColorState({
-      ...colorState,
-      blue: colorState.blue + 1
+    metricsApi.getColors().then(colors => {
+      setColorState({
+        ...colorState,
+        ...colors
+      });
     });
+
   }, 1000);
 
   function getColorBars(colors) {

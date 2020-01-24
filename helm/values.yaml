@@ -43,6 +43,7 @@ color-loader:
 color-viewer:
   image: benwright/kafka-color-viewer
   hostname: color-viewer.ponglehub.co.uk
+  reject_unauthorized: 1
 
 metrics-api:
   redis:
