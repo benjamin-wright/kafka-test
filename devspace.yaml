@@ -42,7 +42,6 @@ deployments:
       color-viewer:
         image: benwright/kafka-color-viewer
         hostname: color-viewer.ponglehub.co.uk
-        reject_unauthorized: 0
       metrics-api:
         image: benwright/kafka-metrics-api
         hostname: metrics-api.ponglehub.co.uk
@@ -88,8 +87,6 @@ commands:
   command: ./scripts/stop-cluster.sh
 - name: hosts
   command: ./scripts/update-hosts.sh color-viewer redis metrics-api
-- name: ssl
-  command: ./scripts/ssl.sh
 
 dependencies:
 - source:

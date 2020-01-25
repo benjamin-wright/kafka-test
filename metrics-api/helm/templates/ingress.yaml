@@ -4,6 +4,7 @@ metadata:
   name: metrics-api
   annotations:
     ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/enable-cors: "true"
 spec:
   rules:
   - host: {{ .Values.hostname }}

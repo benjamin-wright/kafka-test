@@ -4,6 +4,18 @@ import useInterval from './hooks/set-interval';
 
 import ColorBar from './color-elements/color-bar';
 import metricsApi from './services/metrics';
+import styled from 'styled-components';
+
+const ColorTable = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+`;
+
+const Page = styled.div`
+  height: 10em;
+  width: 1vw;
+`;
 
 function App() {
   const [ colorState, setColorState ] = useState({
@@ -14,26 +26,22 @@ function App() {
 
   useInterval(() => {
     metricsApi.getColors().then(colors => {
-      setColorState({
-        ...colorState,
-        ...colors
-      });
+      setColorState(colors);
     });
 
   }, 1000);
 
   function getColorBars(colors) {
-    return <> { Object.keys(colors).map(key => (<ColorBar color={key} value={colors[key]} />)) }</>
+    return Object.keys(colors).map(key => (<ColorBar color={key} value={colors[key]} />))
   }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Some rubbish content
-        </p>
-        { getColorBars(colorState) }
-      </header>
+      <Page>
+        <ColorTable>
+          { getColorBars(colorState) }
+        </ColorTable>
+      </Page>
     </div>
   );
 }

@@ -17,6 +17,3 @@ spec:
       containers:
       - name: color-viewer
         image: {{ .Values.image }}
-        env:
-        - name: NODE_TLS_REJECT_UNAUTHORIZED
-          value: "{{ .Values.reject_unauthorized }}"

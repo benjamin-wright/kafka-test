@@ -1,3 +1,2 @@
 image: benwright/kafka-color-viewer
 hostname: color-viewer.default.co.uk
-reject_unauthorized: 1

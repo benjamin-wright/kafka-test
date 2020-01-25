@@ -3,8 +3,7 @@ kind: Ingress
 metadata:
   name: color-viewer
   annotations:
-    cert-manager.io/cluster-issuer: selfsigning-issuer
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: {{ .Values.hostname }}
@@ -13,8 +12,4 @@ spec:
         - path: /
           backend:
             serviceName: color-viewer
-            servicePort: 443
-  tls:
-  - hosts:
-    - {{ .Values.hostname }}
-    secretName: color-viewer-cert
+            servicePort: 80

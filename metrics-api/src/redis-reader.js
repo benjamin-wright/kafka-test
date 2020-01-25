@@ -46,8 +46,12 @@ module.exports = class RedisReader {
     }
 
     async getColors() {
-        const list = JSON.parse(await this.get('color_list')).sort();
-        const values = await this.mget(list);
+        const list = JSON.parse(await this.get('color_list'));
+        if (!Array.isArray(list)) {
+            return {};
+        }
+
+        const values = await this.mget(list.sort());
 
         const result = {};
         for (let i = 0; i < list.length; i++) {
