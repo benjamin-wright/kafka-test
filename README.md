@@ -1,5 +1,5 @@
 ```mermaid
-graph TB
+graph LR
     subgraph kafka
         colors.raw;
         colors.processed;

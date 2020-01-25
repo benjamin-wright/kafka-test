@@ -18,10 +18,6 @@ spec:
       - name: metrics-api
         image: {{ .Values.image }}
         env:
-        - name: KAFKA_HOST
-          value: {{ .Values.kafka.host }}
-        - name: KAFKA_PORT
-          value: "{{ .Values.kafka.port }}"
         - name: REDIS_HOST
           value: {{ .Values.redis.host }}
         - name: REDIS_PORT

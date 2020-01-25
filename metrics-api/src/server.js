@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const Router = require('koa-router');
-const RedisWriter = require('./redis-writer');
+const RedisReader = require('./redis-reader');
+const package = require('../package.json');
 
 const app = new Koa();
 const router = new Router();
@@ -8,10 +9,19 @@ const router = new Router();
 const redisHost = process.env['REDIS_HOST'] || 'redis';
 const redisPort = process.env['REDIS_PORT'] || 6379;
 
-const writer = new RedisWriter(redisHost, redisPort);
+const reader = new RedisReader(redisHost, redisPort);
 
-router.get('/', (ctx, next) => {
-  // ctx.router available
+router.get('/status', (ctx, next) => {
+  const status = {
+    redis: reader.connected ? 'connected' : (reader.error ? 'error': 'connecting'),
+    version: package.version
+  }
+
+  ctx.body = status;
+});
+
+router.get('/colors', async (ctx, next) => {
+  ctx.body = await reader.getColors();
 });
 
 app

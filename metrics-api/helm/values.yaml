@@ -1,8 +1,5 @@
 image: benwright/kafka-metrics-api
-
-kafka:
-  host: kafka
-  port: 9092
+hostname: metrics-api.default.co.uk
 
 redis:
   host: redis
