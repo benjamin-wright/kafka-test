@@ -1,0 +1,9 @@
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = *.ponglehub.co.uk
+DNS.2 = *.ponglehub.com
+DNS.3 = ponglehub.co.uk
+DNS.4 = ponglehub.com

@@ -86,6 +86,8 @@ commands:
   command: ./scripts/stop-cluster.sh
 - name: hosts
   command: ./scripts/update-hosts.sh color-viewer redis
+- name: ssl
+  command: ./scripts/ssl.sh
 
 dependencies:
 - source:

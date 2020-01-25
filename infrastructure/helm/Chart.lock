@@ -5,5 +5,8 @@ dependencies:
 - name: metrics-server
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 2.9.0
-digest: sha256:6bce9aa0a4d5ebafe1a999ab3b343c0aa80f70017ff748f63ec992c6faf56b0e
-generated: "2020-01-18T18:22:12.566253Z"
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: 0.13.0
+digest: sha256:bf874076381ca95968b75b5be914e913b3a093bf72c76aeb52fbd3fe5820f9c5
+generated: "2020-01-25T12:05:35.436064Z"

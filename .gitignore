@@ -10,3 +10,5 @@ color-loader/project/target
 color-loader/target
 
 *.tgz
+
+ssl/certs
