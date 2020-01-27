@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: redis-commander
   annotations:
-    cert-manager.io/cluster-issuer: nameOfClusterIssuer
+    cert-manager.io/cluster-issuer: selfsigning-issuer
 spec:
   rules:
   - host: {{ .Values.redis_commander.hostname }}

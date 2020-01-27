@@ -5,6 +5,7 @@ metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/enable-cors: "true"
+    cert-manager.io/cluster-issuer: selfsigning-issuer
 spec:
   rules:
   - host: {{ .Values.hostname }}
@@ -14,3 +15,7 @@ spec:
           backend:
             serviceName: metrics-api
             servicePort: 80
+  tls:
+  - hosts:
+    - {{ .Values.hostname }}
+    secretName: metrics-api-cert

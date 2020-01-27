@@ -13,8 +13,8 @@ const ColorTable = styled.div`
 `;
 
 const Page = styled.div`
-  height: 10em;
-  width: 1vw;
+  height: 90vh;
+  width: 100vw;
 `;
 
 function App() {

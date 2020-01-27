@@ -21,6 +21,7 @@ object ColorLoader {
       .option("kafka.bootstrap.servers", "kafka:9092")
       .option("subscribePattern", "colors.raw")
       .option("startingOffsets", "earliest")
+      .option("maxOffsetsPerTrigger", 100)
       .option("checkpointLocation", "/tmp/whatevs/readCheckpoint")
       .load()
 

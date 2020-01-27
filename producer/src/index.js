@@ -3,7 +3,7 @@ const faker = require('faker');
 
 const host = process.env['KAFKA_HOST'] || 'kafka';
 const port = process.env['KAFKA_PORT'] || 9092
-const messageInterval = process.env['SUBMIT_INTERVAL'] || 250;
+const messageInterval = process.env['SUBMIT_INTERVAL'] || 1000;
 
 console.info(`Connecting to Kafka at ${host}:${port}`);
 
