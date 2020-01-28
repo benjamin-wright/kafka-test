@@ -9,7 +9,7 @@ module.exports = class RedisReader {
 
         this.client.on("error", err => {
             console.error(`redis connection error: ${err.message}`);
-            this.error = true;
+            process.exit(1);
         })
 
         this.client.on("ready", () => {
@@ -18,8 +18,6 @@ module.exports = class RedisReader {
     }
 
     get(key) {
-        if (this.error) { throw new Error('Can\'t use redis client in an errored state'); }
-
         return new Promise((resolve, reject) => {
             this.client.get(key, (err, value) => {
                 if (err) {
@@ -32,8 +30,6 @@ module.exports = class RedisReader {
     }
 
     mget(keys) {
-        if (this.error) { throw new Error('Can\'t use redis client in an errored state'); }
-
         return new Promise((resolve, reject) => {
             this.client.mget(keys, (err, value) => {
                 if (err) {

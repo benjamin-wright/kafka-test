@@ -3,6 +3,7 @@ import './App.css';
 import useInterval from './hooks/set-interval';
 
 import ColorBar from './color-elements/color-bar';
+import ColorWheel from './color-elements/color-wheel';
 import metricsApi from './services/metrics';
 import styled from 'styled-components';
 
@@ -19,9 +20,8 @@ const Page = styled.div`
 
 function App() {
   const [ colorState, setColorState ] = useState({
-    blue: 0,
-    red: 0,
-    green: 0
+    total: 0,
+    colors: {}
   });
 
   useInterval(() => {
@@ -31,15 +31,29 @@ function App() {
 
   }, 1000);
 
-  function getColorBars(colors) {
-    return Object.keys(colors).map(key => (<ColorBar color={key} value={colors[key]} />))
+  const otherState = {
+    colors: {
+      red: 0,
+      green: 1,
+      blue: 2,
+      indigo: 3,
+      violet: 4,
+      total: 5
+    },
+    total: 5
+  }
+
+  function getColorBars(total, colors) {
+    return Object.keys(colors).map(key => (<ColorWheel color={key} value={colors[key] / total} />))
   }
 
   return (
     <div className="App">
+      <h1>Color Viewer!</h1>
       <Page>
+        <p>Totals: { colorState.total }</p>
         <ColorTable>
-          { getColorBars(colorState) }
+          { getColorBars(otherState.total, otherState.colors) }
         </ColorTable>
       </Page>
     </div>

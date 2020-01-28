@@ -21,7 +21,6 @@ object ColorLoader {
       .option("kafka.bootstrap.servers", "kafka:9092")
       .option("subscribePattern", "colors.raw")
       .option("startingOffsets", "earliest")
-      .option("maxOffsetsPerTrigger", 100)
       .option("checkpointLocation", "/tmp/whatevs/readCheckpoint")
       .load()
 
@@ -66,6 +65,8 @@ object ColorLoader {
       .option("topic", "colors.list")
       .option("checkpointLocation", "/tmp/whatevs/listCheckpoint")
       .start()
+
+    query3 = df.
 
     query1.awaitTermination()
     query2.awaitTermination()

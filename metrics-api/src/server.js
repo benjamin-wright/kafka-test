@@ -21,7 +21,17 @@ router.get('/status', (ctx, next) => {
 });
 
 router.get('/colors', async (ctx, next) => {
-  ctx.body = await reader.getColors();
+  if (!reader.connected) {
+    ctx.status = 503;
+    ctx.body = { message: "Redis connection not established" };
+  }
+
+  const colors = await reader.getColors();
+  const total = Object.keys(colors).map(color => colors[color]).reduce((sum, value) => sum + value, 0);
+  ctx.body = {
+    colors,
+    total
+  }
 });
 
 app

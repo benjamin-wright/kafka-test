@@ -7,13 +7,11 @@ module.exports = class RedisWriter {
 
         this.client.on("error", err => {
             console.error(`redis connection error: ${err.message}`);
-            this.error = true;
+            process.exit(1);
         })
     }
 
     set(key, value) {
-        if (this.error) { throw new Error('Can\'t use redis client in an errored state'); }
-
         this.client.set(key, value);
     }
 }
