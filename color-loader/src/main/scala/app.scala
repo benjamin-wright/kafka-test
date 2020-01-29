@@ -66,8 +66,6 @@ object ColorLoader {
       .option("checkpointLocation", "/tmp/whatevs/listCheckpoint")
       .start()
 
-    query3 = df.
-
     query1.awaitTermination()
     query2.awaitTermination()
 

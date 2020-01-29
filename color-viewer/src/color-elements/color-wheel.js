@@ -1,16 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const Container = styled.div`
+    display: inline-block;
+    position: relative;
+    height: ${props => props.height}px;
+    width: ${props => props.width}px;
+`;
+
+const Background = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: ${props => props.color};
+    border-radius: 50px;
+    opacity: 0.15;
+`;
+
+const NumberContainer = styled.div`
+    position: absolute;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+`;
+
+const NumberText = styled.p`
+    color: ${props => props.color};
+`;
+
 const Circle = styled.circle`
     stroke: ${props => props.color};
     stroke-width: 2;
-    fill: white;
+    fill: none;
 `;
 
 const Path = styled.path`
     stroke: ${props => props.color};
     stroke-width: 2;
-    fill: white;
+    fill: none;
 `;
 
 function polarToCartesian(centerX, centerY, radius, angle) {
@@ -22,25 +55,26 @@ function polarToCartesian(centerX, centerY, radius, angle) {
     }
 }
 
-function getArcString(angle) {
+function getArcString(center, radius, angle) {
     const start = polarToCartesian(center.x, center.y, radius, 0);
     const end = polarToCartesian(center.x, center.y, radius, angle);
 
     const rightQuad = angle > 180 ? 1 : 0;
 
-    return `M ${start.x} ${start.y} A 45 45 0 ${rightQuad} 1 ${end.x} ${end.y}`;
+    return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${rightQuad} 1 ${end.x} ${end.y}`;
 }
 
-const radius = 45;
-const center = {
-    x: 50,
-    y: 50
-};
+function getSVG(color, value, size) {
+    const radius = size / 2.5;
+    const center = {
+        x: size / 2,
+        y: size / 2
+    };
 
-function getSVG(color, value) {
     if (value === 1) {
         return (
-            <svg height="100" width="100">
+            <svg height={size} width={size}>
+                <Circle id="border" cx={center.x} cy={center.y} r={size/2 - 1} color={color} />
                 <Circle id="counter" cx={center.x} cy={center.y} r={radius} color={color} />
             </svg>
         )
@@ -48,11 +82,26 @@ function getSVG(color, value) {
 
     return (
         <svg height="100" width="100">
-            <Path id="counter" d={getArcString(value * 360)} color={color} />
+            <Circle id="border" cx={center.x} cy={center.y} r={size/2 - 1} color={color} />
+            <Path id="counter" d={getArcString(center, radius, value * 360)} color={color} />
         </svg>
     )
 }
 
-export default function({ color, value }) {
-    return getSVG(color, value);
+function getValueString(value) {
+    if (value === 1) {
+        return "100%"
+    }
+
+    return value * 100 + "%"
+}
+
+export default function({ size = 100, color, value }) {
+    return <Container width={size} height={size}>
+        <Background color={color} />
+        { getSVG(color, value, size) }
+        <NumberContainer>
+            <NumberText color={color}>{ getValueString(value) }</NumberText>
+        </NumberContainer>
+    </Container>
 }

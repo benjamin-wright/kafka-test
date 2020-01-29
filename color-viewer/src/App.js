@@ -31,18 +31,6 @@ function App() {
 
   }, 1000);
 
-  const otherState = {
-    colors: {
-      red: 0,
-      green: 1,
-      blue: 2,
-      indigo: 3,
-      violet: 4,
-      total: 5
-    },
-    total: 5
-  }
-
   function getColorBars(total, colors) {
     return Object.keys(colors).map(key => (<ColorWheel color={key} value={colors[key] / total} />))
   }
@@ -53,7 +41,7 @@ function App() {
       <Page>
         <p>Totals: { colorState.total }</p>
         <ColorTable>
-          { getColorBars(otherState.total, otherState.colors) }
+          { getColorBars(colorState.total, colorState.colors) }
         </ColorTable>
       </Page>
     </div>
