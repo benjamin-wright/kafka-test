@@ -19,6 +19,10 @@ const Background = styled.div`
     opacity: 0.15;
 `;
 
+const ShadowSVG = styled.svg`
+    filter: drop-shadow(0px 0px 2px lightgray);
+`;
+
 const NumberContainer = styled.div`
     position: absolute;
     display: flex;
@@ -32,6 +36,7 @@ const NumberContainer = styled.div`
 
 const NumberText = styled.p`
     color: ${props => props.color};
+    text-shadow: 0 0 3px rgba(0.8, 0.8, 0.8, 0.4);
 `;
 
 const Circle = styled.circle`
@@ -73,30 +78,33 @@ function getSVG(color, value, size) {
 
     if (value === 1) {
         return (
-            <svg height={size} width={size}>
+            <ShadowSVG height={size} width={size}>
                 <Circle id="border" cx={center.x} cy={center.y} r={size/2 - 1} color={color} />
                 <Circle id="counter" cx={center.x} cy={center.y} r={radius} color={color} />
-            </svg>
+            </ShadowSVG>
         )
     }
 
     return (
-        <svg height="100" width="100">
+        <ShadowSVG height="100" width="100">
             <Circle id="border" cx={center.x} cy={center.y} r={size/2 - 1} color={color} />
             <Path id="counter" d={getArcString(center, radius, value * 360)} color={color} />
-        </svg>
+        </ShadowSVG>
     )
 }
 
 function getValueString(value) {
-    if (value === 1) {
-        return "100%"
-    }
-
-    return value * 100 + "%"
+    return (value * 100).toFixed(0) + "%"
 }
 
 export default function({ size = 100, color, value }) {
+    if (value < 0) {
+        value = 0
+    }
+    if (value > 1) {
+        value = 1
+    }
+
     return <Container width={size} height={size}>
         <Background color={color} />
         { getSVG(color, value, size) }
