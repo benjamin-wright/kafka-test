@@ -1,5 +1,6 @@
 import React from 'react';
-import ColorWheel from '../color-elements/color-wheel';
+import ColorWheel from './color-wheel';
+import '../index.css';
 
 export default {
   title: 'Color Components/Color Wheel',

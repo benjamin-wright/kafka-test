@@ -17,11 +17,6 @@ redis_commander:
   image: rediscommander/redis-commander
   hostname: redis.ponglehub.co.uk
 
-parrot:
-  kafka:
-    host: kafka
-    port: 9092
-
 producer:
   image: benwright/kafka-producer
   kafka:

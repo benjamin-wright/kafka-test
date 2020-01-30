@@ -30,9 +30,6 @@ dependencies:
  - name: metrics-api
    version: ~0.1.0
    repository: file://../metrics-api/helm
- - name: parrot
-   version: ~0.1.0
-   repository: file://../parrot/helm
  - name: producer
    version: ~0.1.0
    repository: file://../producer/helm

@@ -1,9 +1,5 @@
 version: v1beta6
 images:
-  parrot:
-    image: benwright/kafka-parrot
-    dockerfile: parrot/Dockerfile
-    context: ./parrot
   producer:
     image: benwright/kafka-producer
     dockerfile: producer/Dockerfile
@@ -37,8 +33,6 @@ deployments:
         image: benwright/kafka-producer
       consumer:
         image: benwright/kafka-consumer
-      parrot:
-        image: benwright/kafka-parrot
       color-viewer:
         image: benwright/kafka-color-viewer
         hostname: color-viewer.ponglehub.co.uk
@@ -64,10 +58,6 @@ dev:
     - node_modules/
   - imageName: consumer
     localSubPath: consumer
-    excludePaths:
-    - node_modules/
-  - imageName: parrot
-    localSubPath: parrot
     excludePaths:
     - node_modules/
   - imageName: metrics-api

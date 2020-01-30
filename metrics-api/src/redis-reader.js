@@ -13,6 +13,7 @@ module.exports = class RedisReader {
         })
 
         this.client.on("ready", () => {
+            console.error(`redis connected`);
             this.connected = true;
         });
     }

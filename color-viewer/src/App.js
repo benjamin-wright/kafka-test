@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import useInterval from './hooks/set-interval';
 
-import ColorBar from './color-elements/color-bar';
 import ColorWheel from './color-elements/color-wheel';
+import Header from './page-components/header';
 import metricsApi from './services/metrics';
 import styled from 'styled-components';
 
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Color Viewer!</h1>
+      <Header title="Color Viewer!" />
       <Page>
         <p>Totals: { colorState.total }</p>
         <ColorTable>
